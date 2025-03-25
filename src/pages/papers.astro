@@ -4,16 +4,27 @@ import { publications } from "@/data/cv";
 import { highlightAuthor } from "@/lib/utils";
 import {template} from "@/settings";
 
-const ALL_PAPERS = publications; // This will be replaced with dynamic data later
+// Configuración de paginación
+const ITEMS_PER_PAGE = 25;
+const currentPage = parseInt(Astro.url.searchParams.get('page') || '1');
+const totalItems = publications.length;
+const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+const showPagination = totalPages > 1;
+
+// Obtener los elementos para la página actual
+const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+const endIndex = startIndex + ITEMS_PER_PAGE;
+const currentItems = publications.slice(startIndex, endIndex);
 ---
 
 <Layout title="Papers">
   <div class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-8">Papers</h1>
+    <h1 class="text-3xl font-bold mb-4">Papers</h1>
+    <p class="text-base-content/80 mb-4">En esta sección encontrarás papers científicos relacionados a las dificultades de aprendizaje. Estos documentos académicos presentan investigaciones actualizadas, metodologías de intervención y avances en el campo de las DEA (Dificultades Específicas del Aprendizaje).</p>
 
     <div class="space-y-8">
       {
-        !ALL_PAPERS.length ? <p>No papers found</p> : ALL_PAPERS.map((paper) => (
+        !totalItems ? <p class="text-base-content/80"><b>No hay papers disponibles</b></p> : currentItems.map((paper) => (
           <div class="card bg-base-200">
             <div class="card-body">
               <h2 class="card-title text-xl">
@@ -40,14 +51,27 @@ const ALL_PAPERS = publications; // This will be replaced with dynamic data late
       }
     </div>
 
-    <section class="flex justify-center mt-8">
-      <div class="join">
-        <button class="join-item btn btn-sm">«</button>
-        <button class="join-item btn btn-sm">1</button>
-        <button class="join-item btn btn-sm btn-active">2</button>
-        <button class="join-item btn btn-sm">3</button>
-        <button class="join-item btn btn-sm">»</button>
-      </div>
-    </section>
+    {showPagination && (
+      <section class="flex justify-center mt-8">
+        <div class="join">
+          {currentPage > 1 && (
+            <a href={`?page=${currentPage - 1}`} class="join-item btn btn-sm">«</a>
+          )}
+          
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+            <a 
+              href={`?page=${page}`} 
+              class={`join-item btn btn-sm ${page === currentPage ? 'btn-active' : ''}`}
+            >
+              {page}
+            </a>
+          ))}
+          
+          {currentPage < totalPages && (
+            <a href={`?page=${currentPage + 1}`} class="join-item btn btn-sm">»</a>
+          )}
+        </div>
+      </section>
+    )}
   </div>
 </Layout>
