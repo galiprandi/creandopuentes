@@ -12,6 +12,7 @@ export const profile = {
 export const social = {
 	email: 'mariadelosangelesceliz@gmail.com',
 	linkedin: 'https://www.linkedin.com/in/mar%C3%ADa-de-los-angeles-celiz-a00451276/',
+	whatsapp: 'https://wa.me/5493815090490',
 	x: '',
 	github: '',
 	gitlab: '',
