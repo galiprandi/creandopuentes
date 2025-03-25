@@ -28,6 +28,12 @@ export interface Publication {
   abstract?: string;
 }
 
+export interface Courses {
+  title: string;
+  organization: string;
+  time: string;
+}
+
 export function isExperience(element: Experience | Education): element is Experience {
   return 'title' in element && 'company' in element;
 }

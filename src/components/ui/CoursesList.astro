@@ -1,0 +1,26 @@
+---
+import { isSkill } from '@/types/cv';
+import type { Skill, Publication, Courses } from '@/types/cv';
+import { highlightAuthor } from '@/lib/utils'
+
+interface Props {
+	elements: Courses[]
+}
+
+const { elements } = Astro.props
+---
+<ul class='space-y-8'>
+  {elements.map((element, index) => (
+    <li class='group'>
+     
+      <a
+        href={element.title as string}
+        class='block hover:text-accent transition-colors duration-200'
+        target='_blank'
+      >
+        <h3 class='text-lg font-bold mb-2'>{element.title} <small>({element.time})</small></h3>
+      </a>
+      <p class='text-base mb-2'>{element.organization}</p>
+      </li>
+  ))}
+</ul>

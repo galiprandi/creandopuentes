@@ -9,11 +9,11 @@ const ALL_PAPERS = publications; // This will be replaced with dynamic data late
 
 <Layout title="Papers">
   <div class="prose max-w-none">
-    <h1 class="text-3xl font-bold mb-8">Publications</h1>
+    <h1 class="text-3xl font-bold mb-8">Papers</h1>
 
     <div class="space-y-8">
       {
-        ALL_PAPERS.map((paper) => (
+        !ALL_PAPERS.length ? <p>No papers found</p> : ALL_PAPERS.map((paper) => (
           <div class="card bg-base-200">
             <div class="card-body">
               <h2 class="card-title text-xl">
@@ -40,7 +40,7 @@ const ALL_PAPERS = publications; // This will be replaced with dynamic data late
       }
     </div>
 
-    <div class="flex justify-center mt-8">
+    <section class="flex justify-center mt-8">
       <div class="join">
         <button class="join-item btn btn-sm">«</button>
         <button class="join-item btn btn-sm">1</button>
@@ -48,6 +48,6 @@ const ALL_PAPERS = publications; // This will be replaced with dynamic data late
         <button class="join-item btn btn-sm">3</button>
         <button class="join-item btn btn-sm">»</button>
       </div>
-    </div>
+    </section>
   </div>
 </Layout>
