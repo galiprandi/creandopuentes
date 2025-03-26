@@ -2,10 +2,13 @@
 import Layout from '@/layouts/Layout.astro'
 import { experiences, education, skills, courses } from '../data/cv'
 import CvTimeline from '@/components/ui/CvTimeline.astro'
+import { profile } from '@/settings'
 
 import type { Experience, Education, Courses } from '../types/cv'
 import List from '@/components/ui/List.astro'
 import CoursesList from '@/components/ui/CoursesList.astro'
+
+const { author_name } = profile
 
 let orderdExperiences: Experience[] = []
 let orderdEducations: Education[] = []
@@ -46,6 +49,11 @@ if (courses.length > 0) {
 ---
 
 <Layout>
+	<section class="mb-8">
+		<h1 class="text-3xl font-bold mb-4 text-center">{author_name}</h1>
+		<div class="divider"></div>
+	</section>
+
 	{
 		orderdEducations.length > 0 && (
 			<section class='mb-12'>
@@ -69,7 +77,7 @@ if (courses.length > 0) {
 	}
 
 	{
-		orderdEducations.length > 0 && (
+		orderedCourses.length > 0 && (
 			<section class='mb-12'>
 				<h2 class='text-2xl font-bold mb-6 border-b pb-2'>
 					Capacitaciones
