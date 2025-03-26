@@ -91,6 +91,7 @@ const {
 	@media (prefers-color-scheme: dark) {
 		:root {
 			--my-color: #252b30;
+			--btn-color: #f39413 !important;
 		}
 	}
 	html,
@@ -99,4 +100,20 @@ const {
 		width: 100%;
 		height: 100%;
 	}
+</style>
+
+<style is:global>
+	:root {
+		--color-accent: #f57d07;
+	}
+
+	.btn {
+		background-color: var(--color-accent);
+		outline-color: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+	.text-secondary {
+		color: var(--color-accent);
+	}
+	
 </style>
