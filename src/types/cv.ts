@@ -26,6 +26,7 @@ export interface Publication {
   time: string;
   link?: string;
   abstract?: string;
+  language: string;
 }
 
 export interface Courses {

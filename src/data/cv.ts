@@ -78,4 +78,14 @@ export const courses: Courses[] = [
 
 export const skills: Skill[] = [];
 
-export const publications: Publication[] = [];
+export const publications: Publication[] = [
+  {
+    title: "Developmental Dyslexia: A Review of Biological Interactions",
+    authors: "Nandini C. Singh, Chaitra Rao",
+    journal: "Annals of Dyslexia",
+    time: "2019",
+    link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6851403/pdf/nihms-1029312.pdf",
+    abstract: "La dislexia del desarrollo es una discapacidad específica de aprendizaje caracterizada por déficits en la lectura y la ortografía que no pueden atribuirse a baja inteligencia, escasas oportunidades educativas o discapacidades sensoriales. Es un trastorno complejo y multifacético con una base genética y una firma neurológica. Esta revisión examina las interacciones biológicas que contribuyen a la dislexia del desarrollo, centrándose en los aspectos genéticos, neuroanatómicos y neurofuncionales del trastorno.",
+    language: "Inglés"
+  }
+];
