@@ -10,14 +10,14 @@ const showPagination = totalRecords > 25
   <div class="join flex justify-center mt-8">
     {/* Previous button */}
     <a
-          href={page.url.prev}
+          href={page.url.prev ? `${template.base}${page.url.prev}` : undefined}
       class:list={["join-item btn btn-sm", { "btn-disabled": !page.url.prev }]}
     >«</a>
 
 
     {/* Next button */}
     <a
-          href={page.url.next}
+          href={page.url.next ? `${template.base}${page.url.next}` : undefined}
       class:list={["join-item btn btn-sm", { "btn-disabled": !page.url.next }]}
     >»</a>
   </div>
