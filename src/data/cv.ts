@@ -87,5 +87,14 @@ export const publications: Publication[] = [
     link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC6851403/pdf/nihms-1029312.pdf",
     abstract: "La dislexia del desarrollo es una discapacidad específica de aprendizaje caracterizada por déficits en la lectura y la ortografía que no pueden atribuirse a baja inteligencia, escasas oportunidades educativas o discapacidades sensoriales. Es un trastorno complejo y multifacético con una base genética y una firma neurológica. Esta revisión examina las interacciones biológicas que contribuyen a la dislexia del desarrollo, centrándose en los aspectos genéticos, neuroanatómicos y neurofuncionales del trastorno.",
     language: "Inglés"
+  },
+  {
+    title: "Dificultades de Aprendizaje en el Siglo XXI: Nuevas Perspectivas y Estrategias de Enseñanza Innovadoras",
+    authors: "Maritza Encarnacion Guilca Mena, Hipatia Carolina Fernandez Fernandez, Luis Abelardo Guanoluisa Yanez, Irma Melida Aimacaña Mullo",
+    journal: "Polo del Conocimiento",
+    time: "Diciembre 2023",
+    link: "https://dialnet.unirioja.es/descarga/articulo/9257799.pdf",
+    abstract: "Este estudio examina las dificultades de aprendizaje en el siglo XXI, destacando estrategias innovadoras como la integración de TIC, la gamificación, el Aprendizaje Basado en Problemas (ABP), el Aprendizaje Colaborativo en Línea (ACOL) y las Metodologías Thinking Based Learning (TBL). La investigación enfatiza la necesidad de modernizar la educación y adaptar las metodologías tradicionales a los desafíos de la era digital.",
+    language: "Español"
   }
 ];
