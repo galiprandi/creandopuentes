@@ -38,5 +38,19 @@ Para crear una nueva entrada en el blog, sigue los siguientes pasos:
 
 1. Crea un nuevo archivo en el directorio `src/content/BlogPosts/` con el nombre `post1.md`
 2. La numeración de los archivos debe ser secuencial
-3. Usa como template el archivo `src/content/BlogPosts/example.md`
+3. Usa como template el archivo `src/assets/post_exmaple.md`
 
+### Formato del frontmatter
+
+El frontmatter de los posts debe seguir estas reglas:
+
+```md
+---
+title: "Título del post"
+date: "YYYY-MM-DD"  # La fecha debe ser un string entre comillas
+tags: ["tag1", "tag2"]
+excerpt: "Resumen breve del post"
+---
+```
+
+**Importante**: La fecha debe estar en formato string con comillas dobles (`"2025-03-25"`) y no como un valor de fecha sin comillas.
