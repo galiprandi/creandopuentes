@@ -104,6 +104,7 @@ const {
 
 <style is:global>
 	:root {
+		--color-badget: #0d96ae;
 		--color-accent: #f57d07;
 	}
 
@@ -116,6 +117,13 @@ const {
 		opacity: 0.8;
 	}
 	.text-secondary {
+		color: var(--color-accent);
+	}
+	.badge-outline.badge-accent {
+		color: var(--color-badget);
+		border-color: var(--color-badget);
+	}
+	.hover\:text-accent:hover {
 		color: var(--color-accent);
 	}
 	
