@@ -1,0 +1,42 @@
+# Reglas para Windsurf - Creando Puentes
+
+Este documento contiene las reglas y recomendaciones para trabajar con este proyecto en Windsurf IDE.
+
+## Estructura del Proyecto
+
+Este es un proyecto Astro con las siguientes características:
+
+- **Framework**: Astro con React
+- **Estilos**: Tailwind CSS con DaisyUI
+- **Despliegue**: GitHub Pages
+
+## Rutas Principales
+
+- `/`: Página principal
+- `/blog/1`: Blog (si hay contenido disponible)
+- `/papers`: Sección de papers/publicaciones
+- `/cv`: Curriculum Vitae
+
+## Archivos de Configuración Importantes
+
+- `src/settings.ts`: Contiene la configuración principal del sitio, incluyendo:
+  - Configuración de la página principal
+  - Configuración de la página de blog
+  - Configuración de la página de papers
+  - Configuración de la página de cv
+
+- `src/data/cv.ts`: Contiene la información del curriculum vitae, incluyendo:
+  - Información personal
+  - Experiencia laboral
+  - Educación
+  - Habilidades
+  - Proyectos
+  
+## Nuvas entradas en el blog
+
+Para crear una nueva entrada en el blog, sigue los siguientes pasos:
+
+1. Crea un nuevo archivo en el directorio `src/content/BlogPosts/` con el nombre `post1.md`
+2. La numeración de los archivos debe ser secuencial
+3. Usa como template el archivo `src/content/BlogPosts/example.md`
+
