@@ -2,7 +2,7 @@ export const profile = {
 	fullName: 'Crendo Puentes',
 	title: '',
 	institute: '',
-	author_name: 'María de los Ángeles Celiz', // Author name to be highlighted in the papers section
+	author_name: 'María de los Ángeles Céliz', // Author name to be highlighted in the papers section
 }
 
 // Set equal to an empty string to hide the icon that you don't want to display
