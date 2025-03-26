@@ -1,18 +1,24 @@
 ---
 import { template } from "@/settings"
 const { page } = Astro.props
+
+// Verificar si hay más de 25 registros (5 páginas con 5 posts por página)
+const totalRecords = page.total
+const showPagination = totalRecords > 25
 ---
-<div class="join flex justify-center mt-8">
-  {/* Previous button */}
-  <a
-        href={page.url.prev}
-    class:list={["join-item btn btn-sm", { "btn-disabled": !page.url.prev }]}
-  >«</a>
+{showPagination && (
+  <div class="join flex justify-center mt-8">
+    {/* Previous button */}
+    <a
+          href={page.url.prev}
+      class:list={["join-item btn btn-sm", { "btn-disabled": !page.url.prev }]}
+    >«</a>
 
 
-  {/* Next button */}
-  <a
-        href={page.url.next}
-    class:list={["join-item btn btn-sm", { "btn-disabled": !page.url.next }]}
-  >»</a>
-</div>
+    {/* Next button */}
+    <a
+          href={page.url.next}
+      class:list={["join-item btn btn-sm", { "btn-disabled": !page.url.next }]}
+    >»</a>
+  </div>
+)}
