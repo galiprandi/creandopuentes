@@ -1,13 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro'
-
-import { profile } from '@/settings'
+import { getCollection } from 'astro:content'
+import { profile, template } from '@/settings'
 import { publications } from '@/data/cv'
 import ProfilePictures from '@/assets/logo.png'
 import Hero from '@/components/ui/Hero.astro'
 import ArticleList from '@/components/ui/ArticleList.astro'
 
 const { fullName, title, institute } = profile
+
+// Fetch blog entries
+const blogEntries = await getCollection("blog");
+const latestBlogEntries = blogEntries
+  .map(post => ({
+    title: post.data.title,
+    journal: post.data.tags?.[0] || 'Blog',
+    time: new Date(post.data.date).toLocaleDateString(),
+    id: post.id
+  }))
+  .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
+  .slice(0, 5);
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
@@ -24,8 +36,8 @@ const { fullName, title, institute } = profile
 		/>
 	</section>
 
-	<!-- Recent Publications -->
+	<!-- Latest Blog Entries -->
 	<section class='py-12'>
-		<ArticleList listTitle='Últimas capacitaciones' listItems={publications} />
+		<ArticleList listTitle='Últimas entradas' listItems={latestBlogEntries} />
 	</section>
 </Layout>

@@ -5,6 +5,7 @@ interface Props {
     title: string;
     journal: string;
     time: string;
+    id?: string;
   }[];
 }
 const {listTitle, listItems} = Astro.props
@@ -15,10 +16,19 @@ const {listTitle, listItems} = Astro.props
 			{
 				listItems.map(item => (
 					<div class='p-6 rounded-lg text-base-content bg-base-200'>
-						<h3 class='text-xl font-semibold mb-2'>{item.title}</h3>
-						<p >
-							{item.journal} • {item.time}
-						</p>
+						<div class='flex justify-between items-center'>
+							<div>
+								<h3 class='text-xl font-semibold mb-2'>{item.title}</h3>
+								<p>
+									{item.journal} • {item.time}
+								</p>
+							</div>
+							{item.id && (
+								<a href={`/creandopuentes/blog/${item.id}`} class='btn btn-sm btn-secondary text-secondary-content'>
+									Leer más
+								</a>
+							)}
+						</div>
 					</div>
 				))
 			}
