@@ -1,6 +1,5 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import {template} from '@/settings'
 import {getCollection, render} from 'astro:content'
 
 export async function getStaticPaths(): Promise<Array<{ params: { slug: string }, props: { post: any } }>> {
@@ -47,7 +46,7 @@ const { Content } = await render(post);
 							></path>
 						</svg>
 						{
-							new Date(date).toLocaleDateString('en-US', {
+							new Date(date).toLocaleDateString('es-ES', {
 								year: 'numeric',
 								month: 'long',
 								day: 'numeric',
