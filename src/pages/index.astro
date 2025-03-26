@@ -21,6 +21,16 @@ const latestBlogEntries = blogEntries
   .sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime())
   .slice(0, 5);
 
+// Get latest papers
+const latestPapers = publications
+  .slice(0, 5)
+  .map(paper => ({
+    title: paper.title,
+    journal: paper.journal,
+    time: paper.time,
+    link: paper.link
+  }));
+
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
@@ -39,5 +49,10 @@ const latestBlogEntries = blogEntries
 	<!-- Latest Blog Entries -->
 	<section class='py-12'>
 		<ArticleList listTitle='Últimas entradas' listItems={latestBlogEntries} />
+	</section>
+
+	<!-- Latest Papers -->
+	<section class='py-12'>
+		<ArticleList listTitle='Últimos papers' listItems={latestPapers} />
 	</section>
 </Layout>

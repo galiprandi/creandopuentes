@@ -6,6 +6,7 @@ interface Props {
     journal: string;
     time: string;
     id?: string;
+    link?: string;
   }[];
 }
 const {listTitle, listItems} = Astro.props
@@ -26,6 +27,11 @@ const {listTitle, listItems} = Astro.props
 							{item.id && (
 								<a href={`/creandopuentes/blog/${item.id}`} class='btn btn-sm btn-secondary text-secondary-content'>
 									Leer más
+								</a>
+							)}
+							{item.link && (
+								<a href={item.link} class='btn btn-sm btn-secondary text-secondary-content' target="_blank" rel="noopener noreferrer">
+									Leer paper
 								</a>
 							)}
 						</div>
