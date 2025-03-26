@@ -3,9 +3,6 @@ export const profile = {
 	title: '',
 	institute: '',
 	author_name: 'María de los Ángeles Celiz', // Author name to be highlighted in the papers section
-	research_areas: [
-		//  { title: 'Physics', description: 'Brief description of the research interest', field: 'physics' },
-	],
 }
 
 // Set equal to an empty string to hide the icon that you don't want to display
@@ -22,7 +19,7 @@ export const social = {
 }
 
 export const template = {
-	website_url: 'https://galiprandi.github.io', // URL para GitHub Pages
+	website_url: 'https://galiprandi.github.io/creandopuentes', // URL completa incluyendo el repositorio
 	menu_left: false,
 	transitions: true,
 	lightTheme: 'light', // Select one of the Daisy UI Themes or create your own
