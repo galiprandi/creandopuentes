@@ -339,6 +339,14 @@ import EmptyState from '@/components/tools/EmptyState.astro';
 </style>
 
 <script>
+  // Importar la librería marked para convertir Markdown a HTML
+  import { marked } from 'marked';
+  
+  // Configurar marked para que funcione de forma sincrónica
+  marked.setOptions({
+    async: false
+  });
+  
   // Cargar la conversación inicial inmediatamente al cargar la página
   document.addEventListener('DOMContentLoaded', () => {
     // Importar la conversación inicial
@@ -370,7 +378,7 @@ import EmptyState from '@/components/tools/EmptyState.astro';
   {
     role: 'user',
     content: `
-    **Evaluación de Matemáticas para Niños de 8 Años**
+## Evaluación de Matemáticas para Niños de 8 Años
 
 **Nombre del estudiante: ___________________________**
 
@@ -457,7 +465,8 @@ Respuesta: _____________
 
 ---
 
-**¡Excelente trabajo! Revisa las respuestas cuando termines y asegúrate de que todo esté correcto. Si necesitas ayuda en alguna pregunta, no dudes en pedírmelo.**`
+**¡Excelente trabajo! Revisa las respuestas cuando termines y asegúrate de que todo esté correcto. Si necesitas ayuda en alguna pregunta, no dudes en pedírmelo.**
+    `
   },
   {
     role: 'assistant',
@@ -535,18 +544,9 @@ Respuesta: _____________
           htmlContent.style.textAlign = 'justify';
         }
         
-        // Convertir el contenido a HTML
-        htmlContent.innerHTML = message.content;
-        
-        // Si es un mensaje del asistente, aplicar justificación a todos los elementos de texto dentro del mensaje
-        if (message.role === 'assistant') {
-          const elements = htmlContent.querySelectorAll('p, blockquote');
-          elements.forEach(element => {
-            if (element instanceof HTMLElement) {
-              element.style.textAlign = 'justify';
-            }
-          });
-        }
+        // Convertir Markdown a HTML
+        const markdownHtml = marked.parse(message.content);
+        htmlContent.innerHTML = markdownHtml;
         
         contentContainer.appendChild(htmlContent);
         messageEl.appendChild(contentContainer);
@@ -570,6 +570,11 @@ Respuesta: _____________
 <script define:vars={{ initialConversation }}>
   import { marked } from 'marked';
 
+  // Configurar marked para que funcione de forma sincrónica
+  marked.setOptions({
+    async: false
+  });
+  
   // Definimos los tipos de mensajes
   const USER = 'user';
   const ASSISTANT = 'assistant';
@@ -646,26 +651,8 @@ Respuesta: _____________
       htmlContent.style.textAlign = 'justify';
     }
     
-    htmlContent.innerHTML = marked.parse(message.content);
-    
-    // Si es un mensaje del usuario, aplicar estilos de alineación a la derecha a todos los elementos
-    if (message.role === USER) {
-      // Aplicar alineación a la derecha a todos los elementos de texto dentro del mensaje
-      const elements = htmlContent.querySelectorAll('p, h1, h2, h3, h4, h5, h6, ul, ol, li, blockquote');
-      elements.forEach(element => {
-        if (element instanceof HTMLElement) {
-          element.style.textAlign = 'right';
-        }
-      });
-    } else if (message.role === ASSISTANT) {
-      // Aplicar justificación a todos los elementos de texto dentro del mensaje del asistente
-      const elements = htmlContent.querySelectorAll('p, blockquote');
-      elements.forEach(element => {
-        if (element instanceof HTMLElement) {
-          element.style.textAlign = 'justify';
-        }
-      });
-    }
+    const markdownHtml = marked.parse(message.content);
+    htmlContent.innerHTML = markdownHtml;
     
     contentContainer.appendChild(htmlContent);
     
