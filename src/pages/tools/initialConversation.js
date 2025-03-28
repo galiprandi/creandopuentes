@@ -31,7 +31,7 @@ export const initialConversation = [
   {
     role: 'user',
     content: `
-    **Evaluación de Matemáticas para Niños de 8 Años**
+## Evaluación de Matemáticas para Niños de 8 Años
 
 **Nombre del estudiante: ___________________________**
 
@@ -118,7 +118,8 @@ Respuesta: _____________
 
 ---
 
-**¡Excelente trabajo! Revisa las respuestas cuando termines y asegúrate de que todo esté correcto. Si necesitas ayuda en alguna pregunta, no dudes en pedírmelo.**`
+**¡Excelente trabajo! Revisa las respuestas cuando termines y asegúrate de que todo esté correcto. Si necesitas ayuda en alguna pregunta, no dudes en pedírmelo.**
+    `
   },
   {
     role: 'assistant',
