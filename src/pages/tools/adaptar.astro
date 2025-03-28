@@ -1,0 +1,849 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { initialConversation } from '@/data/initialConversation';
+import EmptyState from '@/components/tools/EmptyState.astro';
+---
+
+<Layout title="Adaptador de Evaluaciones">
+  <div class="chat-container">
+    <div id="conversation-container" class="conversation-container">
+      <EmptyState />
+      <div id="messages" class="messages">
+        <!-- La conversación inicial se cargará aquí automáticamente -->
+      </div>
+    </div>
+    
+    <form id="chat-form" class="chat-form">
+      <textarea 
+        id="user-input" 
+        class="user-input" 
+        placeholder="Escribe tu mensaje aquí..." 
+        rows="1"
+      ></textarea>
+      <button type="submit" class="send-button">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+        </svg>
+      </button>
+    </form>
+  </div>
+</Layout>
+
+<style>
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    width: 100%;
+    height: calc(100vh - 250px);
+    margin: 0 auto;
+  }
+
+  .conversation-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .messages {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .message {
+    display: flex;
+    max-width: 80%;
+    max-width: 500px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease-in-out;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    margin: 8px 0;
+    transition: background-color 0.2s ease;
+  }
+
+  .conversation-container .message.user {
+    align-self: flex-end !important;
+    width: max-content !important;
+    margin-left: auto !important;
+    background-color: #f5f5f5 !important;
+    color: #333333 !important;
+    padding: .5em 1em !important;
+    border-radius: 1em !important;
+    text-align: right !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
+    position: relative !important;
+  }
+
+  .conversation-container .message.user:hover {
+    background-color: #e8e8e8 !important;
+  }
+
+  .conversation-container .message.user .prose {
+    text-align: right !important;
+  }
+
+  .conversation-container .message.assistant {
+    align-self: flex-start !important;
+    background-color: #d1f7c4 !important;
+    color: #333333 !important;
+    border-radius: 1em !important;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
+    padding: .5em 1em !important;
+    width: max-content !important;
+    max-width: 80% !important;
+  }
+
+  .conversation-container .message.assistant .prose {
+    text-align: justify !important;
+  }
+
+  .message-content {
+    width: 100%;
+  }
+
+  .message-actions {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    margin-top: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .message:hover .message-actions {
+    opacity: 1;
+  }
+
+  .copy-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333333;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+  }
+
+  .copy-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .copy-button.copied {
+    color: #4f8ef7;
+  }
+
+  .copy-tooltip {
+    font-size: 12px;
+    margin-left: 4px;
+  }
+
+  .chat-form {
+    display: flex;
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: white;
+    position: relative;
+  }
+
+  .user-input {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    resize: none;
+    max-height: 200px;
+    outline: none;
+  }
+
+  .user-input:focus {
+    border-color: #d1f7c4;
+    box-shadow: 0 0 0 2px rgba(209, 247, 196, 0.3);
+  }
+
+  .send-button {
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .send-button:hover {
+    background-color: var(--color-accent);
+    opacity: 0.9;
+  }
+
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    color: #666;
+    font-style: italic;
+  }
+
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #666;
+    border-radius: 50%;
+    animation: bounce 1.4s infinite ease-in-out;
+    display: inline-block;
+  }
+
+  .dot:nth-child(1) { animation-delay: 0s; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Estilos para Markdown */
+  .prose {
+    width: 100%;
+    font-size: 16px; /* Tamaño base de letra aumentado */
+  }
+
+  .prose h1 {
+    font-size: 1.625rem; /* Aumentado desde 1.5rem */
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h2 {
+    font-size: 1.375rem; /* Aumentado desde 1.25rem */
+    font-weight: bold;
+    margin-top: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose h3 {
+    font-size: 1.25rem; /* Aumentado desde 1.125rem */
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose p {
+    margin-bottom: 0.75rem;
+  }
+
+  .prose ul, .prose ol {
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose ul {
+    list-style-type: disc;
+  }
+
+  .prose ol {
+    list-style-type: decimal;
+  }
+
+  .prose li {
+    margin-bottom: 0.25rem;
+  }
+
+  .prose a {
+    color: #0d96ae;
+    text-decoration: underline;
+  }
+
+  .prose code {
+    background-color: #f3f4f6;
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-family: monospace;
+  }
+
+  .prose pre {
+    background-color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+
+  .prose blockquote {
+    border-left: 4px solid #e5e7eb;
+    padding-left: 1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  /* Ajustar el contenedor de mensajes */
+  .conversation-container .messages {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    padding: 1rem !important;
+    overflow-y: auto !important;
+  }
+
+  /* Asegurar que el contenido del mensaje se muestre correctamente */
+  .conversation-container .message-content {
+    width: 100% !important;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .chat-container {
+      height: calc(100vh - 150px);
+    }
+    
+    .message {
+      max-width: 90%;
+    }
+  }
+</style>
+
+<script>
+  // Cargar la conversación inicial inmediatamente al cargar la página
+  document.addEventListener('DOMContentLoaded', () => {
+    // Importar la conversación inicial
+    const initialConversation = [
+  {
+    role: 'user',
+    content: '¿Podrías ayudarme a adaptar una evaluación para un niño de 8 años?'
+  },
+  {
+    role: 'assistant',
+    content: '¡Claro! Estoy aquí para ayudarte. ¿Podrías contarme un poco más sobre el niño? ¿Qué tipo de dificultades tiene al momento de aprender?'
+  },
+  {
+    role: 'user',
+    content: 'El niño tiene dislexia.'
+  },
+  {
+    role: 'assistant',
+    content: 'Gracias por compartirlo. La dislexia puede hacer que leer y escribir sea más complicado, así que podemos hacer algunos ajustes para facilitar la comprensión de las preguntas. Por ejemplo, podemos utilizar frases más cortas, fuentes más grandes y claras, y quizás eliminar distracciones innecesarias. ¿Te gustaría que trabajemos en una adaptación que sea visualmente más accesible y fácil de seguir?'
+  },
+  {
+    role: 'user',
+    content: 'Sí, por favor, me gustaría que sea más accesible y fácil de leer para él.'
+  },
+  {
+    role: 'assistant',
+    content: 'Perfecto, aquí tienes una versión adaptada de la evaluación de matemáticas. La he simplificado y reorganizado para facilitar la lectura y la comprensión. También he incluido instrucciones claras y una estructura más sencilla para que el niño no se sienta abrumado. Espero que te resulte útil.'
+  },
+  {
+    role: 'user',
+    content: `
+    **Evaluación de Matemáticas para Niños de 8 Años**
+
+**Nombre del estudiante: ___________________________**
+
+**Fecha: ___________________________**
+
+---
+
+**Instrucciones:**
+Lee las preguntas con calma. Si no entiendes algo, pide ayuda. Si quieres, puedes usar lápiz y papel para resolver las operaciones. Tómate tu tiempo, no hay prisa.
+
+---
+
+### 1. **Sumas y Restas**
+Aquí tienes algunas sumas y restas para practicar. Recuerda que puedes dibujar o escribir lo que te ayude a resolverlas:
+
+a) 45 más 28 = ______  
+b) 92 menos 56 = ______  
+c) 63 más 17 = ______  
+d) 84 menos 39 = ______  
+
+---
+
+### 2. **Multiplicación**
+Responde a estas preguntas sobre multiplicación. Si te cuesta, puedes contar en grupos para ayudarte:
+
+a) 6 veces 4 = ______  
+b) 8 veces 7 = ______  
+c) 9 veces 3 = ______  
+d) 5 veces 5 = ______  
+
+---
+
+### 3. **División**
+Ahora vamos a hacer algunas divisiones. Piensa en cómo repartir las cosas en partes iguales:
+
+a) 36 dividido por 6 = ______  
+b) 56 dividido por 8 = ______  
+c) 63 dividido por 9 = ______  
+d) 45 dividido por 5 = ______  
+
+---
+
+### 4. **Problema de Suma y Resta**
+Lee este problema con calma. Puedes dibujar para ayudar a entenderlo:
+
+María tenía 50 manzanas. Compró 30 manzanas más y luego dio 25 manzanas a su amiga. ¿Cuántas manzanas tiene ahora?
+
+Respuesta: _____________
+
+---
+
+### 5. **Comparar Números**
+En esta parte, tienes que comparar dos números. Mira si uno es más grande, más pequeño o igual al otro:
+
+a) 54 __ 45 (¿es más grande, más pequeño o igual?)  
+b) 68 __ 68  
+c) 99 __ 100  
+d) 23 __ 22  
+
+---
+
+### 6. **Fracciones**
+Aquí tienes algunas fracciones. Recuerda que una fracción muestra una parte de algo:
+
+a) Si la pizza está dividida en 4 partes iguales y ya comieron 2 partes, ¿qué fracción de la pizza queda? ______________  
+
+b) Si tienes 3 de 5 caramelos, ¿qué fracción de los caramelos tienes? ______________  
+
+---
+
+### 7. **Patrones**
+Ahora verás algunos patrones de números. ¿Puedes encontrar cómo siguen? Intenta predecir los siguientes números:
+
+a) 2, 4, 6, __, __, __  
+
+b) 10, 20, 30, __, __  
+
+---
+
+### 8. **Medición**
+Finalmente, vamos a hablar sobre las medidas. Imagina que tienes una regla que mide 30 centímetros. ¿Cuántos centímetros tiene?
+
+Respuesta: _____________
+
+---
+
+**¡Excelente trabajo! Revisa las respuestas cuando termines y asegúrate de que todo esté correcto. Si necesitas ayuda en alguna pregunta, no dudes en pedírmelo.**`
+  },
+  {
+    role: 'assistant',
+    content: 'He adaptado la evaluación para que sea más clara y fácil de leer. Recuerda que si alguna pregunta es difícil de entender, puedes pedirme que la explique de nuevo. ¡Espero que esta versión sea más accesible para él!'
+  }
+];
+    
+    // Renderizar la conversación inicial
+    const messagesContainer = document.getElementById('messages');
+    if (messagesContainer) {
+      // Aplicar estilos al contenedor de mensajes
+      Object.assign(messagesContainer.style, {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+        padding: '1rem',
+        overflowY: 'auto'
+      });
+      
+      // Función para renderizar un mensaje
+      /**
+       * Renderiza un mensaje en la interfaz de chat
+       * @param {Object} message - El mensaje a renderizar
+       * @param {string} message.role - El rol del mensaje (user o assistant)
+       * @param {string} message.content - El contenido del mensaje
+       * @returns {HTMLElement} El elemento DOM del mensaje
+       */
+      const renderMessage = (message) => {
+        // Verificar que message tiene las propiedades necesarias
+        if (!message || typeof message.role !== 'string' || typeof message.content !== 'string') {
+          console.error('Mensaje inválido:', message);
+          return document.createElement('div');
+        }
+        
+        const messageEl = document.createElement('div');
+        messageEl.className = `message ${message.role}`;
+        
+        // Aplicar estilos directamente al elemento
+        if (message.role === 'user') {
+          Object.assign(messageEl.style, {
+            alignSelf: 'flex-end',
+            width: 'max-content',
+            marginLeft: 'auto',
+            backgroundColor: '#f5f5f5',
+            color: '#333333',
+            padding: '0.5em 1em',
+            borderRadius: '1em',
+            textAlign: 'right',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+            position: 'relative',
+            maxWidth: '80%'
+          });
+        } else if (message.role === 'assistant') {
+          Object.assign(messageEl.style, {
+            alignSelf: 'flex-start',
+            width: 'max-content',
+            backgroundColor: '#d1f7c4',
+            color: '#333333',
+            padding: '0.5em 1em',
+            borderRadius: '1em',
+            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+            maxWidth: '80%'
+          });
+        }
+        
+        const contentContainer = document.createElement('div');
+        contentContainer.className = 'message-content';
+        
+        const htmlContent = document.createElement('div');
+        htmlContent.className = 'prose max-w-none';
+        
+        if (message.role === 'user') {
+          htmlContent.style.textAlign = 'right';
+        } else if (message.role === 'assistant') {
+          htmlContent.style.textAlign = 'justify';
+        }
+        
+        // Convertir el contenido a HTML
+        htmlContent.innerHTML = message.content;
+        
+        // Si es un mensaje del asistente, aplicar justificación a todos los elementos de texto dentro del mensaje
+        if (message.role === 'assistant') {
+          const elements = htmlContent.querySelectorAll('p, blockquote');
+          elements.forEach(element => {
+            if (element instanceof HTMLElement) {
+              element.style.textAlign = 'justify';
+            }
+          });
+        }
+        
+        contentContainer.appendChild(htmlContent);
+        messageEl.appendChild(contentContainer);
+        return messageEl;
+      };
+      
+      // Renderizar cada mensaje
+      initialConversation.forEach(msg => {
+        messagesContainer.appendChild(renderMessage(msg));
+      });
+      
+      // Ocultar el estado vacío
+      const emptyState = document.querySelector('.empty-state');
+      if (emptyState instanceof HTMLElement) {
+        emptyState.style.display = 'none';
+      }
+    }
+  });
+</script>
+
+<script define:vars={{ initialConversation }}>
+  import { marked } from 'marked';
+
+  // Definimos los tipos de mensajes
+  const USER = 'user';
+  const ASSISTANT = 'assistant';
+  
+  // Variable global para la conversación
+  let globalConversation = [];
+  
+  // Función para simular la respuesta del modelo
+  const postToModel = async (message) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // Simulación de respuesta - Lorem ipsum como placeholder
+        const loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+        resolve(loremIpsum);
+      }, 300);
+    });
+  };
+
+  /**
+   * Renderiza un mensaje en la interfaz de chat
+   * @param {Object} message - El mensaje a renderizar
+   * @param {string} message.role - El rol del mensaje (user o assistant)
+   * @param {string} message.content - El contenido del mensaje
+   * @returns {HTMLElement} El elemento DOM del mensaje
+   */
+  const renderMessage = (message) => {
+    // Verificar que message tiene las propiedades necesarias
+    if (!message || typeof message.role !== 'string' || typeof message.content !== 'string') {
+      console.error('Mensaje inválido:', message);
+      return document.createElement('div');
+    }
+    
+    const messageEl = document.createElement('div');
+    messageEl.className = `message ${message.role}`;
+    
+    // Aplicar estilos directamente al elemento
+    if (message.role === USER) {
+      Object.assign(messageEl.style, {
+        alignSelf: 'flex-end',
+        width: 'max-content',
+        marginLeft: 'auto',
+        backgroundColor: '#f5f5f5',
+        color: '#333333',
+        padding: '0.5em 1em',
+        borderRadius: '1em',
+        textAlign: 'right',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        position: 'relative',
+        maxWidth: '80%'
+      });
+    } else if (message.role === ASSISTANT) {
+      Object.assign(messageEl.style, {
+        alignSelf: 'flex-start',
+        width: 'max-content',
+        backgroundColor: '#d1f7c4',
+        color: '#333333',
+        padding: '0.5em 1em',
+        borderRadius: '1em',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+        maxWidth: '80%'
+      });
+    }
+    
+    const contentContainer = document.createElement('div');
+    contentContainer.className = 'message-content';
+    
+    // Convertir Markdown a HTML
+    const htmlContent = document.createElement('div');
+    htmlContent.className = 'prose max-w-none';
+    
+    if (message.role === USER) {
+      htmlContent.style.textAlign = 'right';
+    } else if (message.role === ASSISTANT) {
+      htmlContent.style.textAlign = 'justify';
+    }
+    
+    htmlContent.innerHTML = marked.parse(message.content);
+    
+    // Si es un mensaje del usuario, aplicar estilos de alineación a la derecha a todos los elementos
+    if (message.role === USER) {
+      // Aplicar alineación a la derecha a todos los elementos de texto dentro del mensaje
+      const elements = htmlContent.querySelectorAll('p, h1, h2, h3, h4, h5, h6, ul, ol, li, blockquote');
+      elements.forEach(element => {
+        if (element instanceof HTMLElement) {
+          element.style.textAlign = 'right';
+        }
+      });
+    } else if (message.role === ASSISTANT) {
+      // Aplicar justificación a todos los elementos de texto dentro del mensaje del asistente
+      const elements = htmlContent.querySelectorAll('p, blockquote');
+      elements.forEach(element => {
+        if (element instanceof HTMLElement) {
+          element.style.textAlign = 'justify';
+        }
+      });
+    }
+    
+    contentContainer.appendChild(htmlContent);
+    
+    // Agregar botón de copiar solo para mensajes del asistente
+    if (message.role === ASSISTANT) {
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'message-actions';
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 01-.75.75H9a.75.75 0 01-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 011.927-.184" />
+        </svg>
+      `;
+      
+      copyButton.addEventListener('click', () => {
+        navigator.clipboard.writeText(message.content).then(() => {
+          const originalHTML = copyButton.innerHTML;
+          copyButton.classList.add('copied');
+          copyButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+            <span class="copy-tooltip">Copiado</span>
+          `;
+          setTimeout(() => {
+            copyButton.innerHTML = originalHTML;
+            copyButton.classList.remove('copied');
+          }, 2000);
+        });
+      });
+      
+      actionsDiv.appendChild(copyButton);
+      contentContainer.appendChild(actionsDiv);
+    }
+    
+    messageEl.appendChild(contentContainer);
+    return messageEl;
+  };
+
+  // Función para crear indicador de escritura
+  const createTypingIndicator = () => {
+    const indicator = document.createElement('div');
+    indicator.className = 'typing-indicator';
+    indicator.innerHTML = `
+      Escribiendo<span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    `;
+    return indicator;
+  };
+
+  // Función para guardar la conversación en localStorage
+  const saveConversation = (conversation) => {
+    localStorage.setItem('chatConversation', JSON.stringify(conversation));
+  };
+
+  // Función para cargar la conversación desde localStorage
+  const loadConversation = () => {
+    // Siempre cargamos la conversación inicial como placeholder
+    return [...initialConversation];
+  };
+
+  // Función para actualizar la UI basada en el estado de la conversación
+  const updateUI = (conversation) => {
+    const messagesContainer = document.getElementById('messages');
+    const emptyState = document.querySelector('.empty-state');
+    
+    if (conversation.length > 0) {
+      if (emptyState instanceof HTMLElement) emptyState.style.display = 'none';
+      if (messagesContainer) {
+        // Aplicar estilos al contenedor de mensajes
+        Object.assign(messagesContainer.style, {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '1rem',
+          padding: '1rem',
+          overflowY: 'auto'
+        });
+        
+        messagesContainer.innerHTML = '';
+        conversation.forEach(msg => {
+          messagesContainer.appendChild(renderMessage(msg));
+        });
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    } else {
+      if (emptyState instanceof HTMLElement) emptyState.style.display = 'flex';
+    }
+  };
+
+  // Función para ajustar la altura del textarea
+  const adjustTextareaHeight = (textarea) => {
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 200)}px`;
+  };
+
+  // Inicialización cuando el DOM está listo
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('user-input');
+    const messagesContainer = document.getElementById('messages');
+    
+    // Cargar la conversación inicial como placeholder
+    globalConversation = loadConversation();
+    
+    // Renderizar la conversación inicial inmediatamente
+    if (messagesContainer) {
+      messagesContainer.innerHTML = '';
+      globalConversation.forEach(msg => {
+        messagesContainer.appendChild(renderMessage(msg));
+      });
+      // Scroll al final
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
+    // Ocultar el estado vacío ya que siempre mostramos la conversación inicial
+    const emptyState = document.querySelector('.empty-state');
+    if (emptyState instanceof HTMLElement) emptyState.style.display = 'none';
+    
+    // Manejar envío del formulario
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const userMessage = input.value.trim();
+      if (!userMessage) return;
+      
+      // Limpiar la conversación inicial antes del primer mensaje del usuario
+      if (globalConversation.length === initialConversation.length) {
+        globalConversation = [];
+      }
+      
+      // Agregar mensaje del usuario
+      const newUserMessage = { role: USER, content: userMessage };
+      globalConversation.push(newUserMessage);
+      updateUI(globalConversation);
+      saveConversation(globalConversation);
+      
+      // Limpiar input y resetear altura
+      input.value = '';
+      input.style.height = 'auto';
+      
+      // Mostrar indicador de escritura
+      const typingIndicator = createTypingIndicator();
+      messagesContainer.appendChild(typingIndicator);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      
+      // Obtener respuesta del modelo
+      try {
+        const response = await postToModel(userMessage);
+        
+        // Eliminar indicador de escritura
+        messagesContainer.removeChild(typingIndicator);
+        
+        // Agregar respuesta del asistente
+        const assistantMessage = { role: ASSISTANT, content: response };
+        globalConversation.push(assistantMessage);
+        updateUI(globalConversation);
+        saveConversation(globalConversation);
+      } catch (error) {
+        console.error('Error al obtener respuesta:', error);
+        messagesContainer.removeChild(typingIndicator);
+      }
+    });
+    
+    // Ajustar altura del textarea al escribir
+    input.addEventListener('input', () => {
+      adjustTextareaHeight(input);
+    });
+    
+    // Manejar Enter para enviar (y Shift+Enter para nueva línea)
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.dispatchEvent(new Event('submit'));
+      }
+    });
+    
+    // Inicializar altura del textarea
+    adjustTextareaHeight(input);
+  });
+</script>
