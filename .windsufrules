@@ -1,56 +1,47 @@
-# Reglas para Windsurf - Creando Puentes
+# Guía de Estilo y Configuración para el Proyecto Creando Puentes en Windsurf IDE
 
-Este documento contiene las reglas y recomendaciones para trabajar con este proyecto en Windsurf IDE.
+## Interacción con el usuario
+- Habla en español
+- Responde de manera corta y concisa
 
-## Estructura del Proyecto
-
-Este es un proyecto Astro con las siguientes características:
-
-- **Framework**: Astro con React
-- **Estilos**: Tailwind CSS con DaisyUI
+## Acerca del Proyecto
+Sitio web personal/profesional desarrollado con:
+- **Framework**: Astro + React
+- **Estilos**: Tailwind CSS + DaisyUI
 - **Despliegue**: GitHub Pages
 
-## Rutas Principales
+**Propósito**: Mostrar información profesional, publicaciones académicas y contenido técnico a través de un sitio moderno y responsivo.
 
-- `/`: Página principal
-- `/blog/1`: Blog (si hay contenido disponible)
-- `/papers`: Sección de papers/publicaciones
-- `/cv`: Curriculum Vitae
+**Estructura principal**:
+- `/`: Landing page
+- `/cv`: Curriculum vitae interactivo
+- `/papers`: Publicaciones académicas
+- `/blog/*`: Artículos técnicos
 
-## Archivos de Configuración Importantes
+## Configuración Clave
 
-- `src/settings.ts`: Contiene la configuración principal del sitio, incluyendo:
-  - Configuración de la página principal
-  - Configuración de la página de blog
-  - Configuración de la página de papers
-  - Configuración de la página de cv
+### `src/settings.ts`
+- Configuración global del sitio
+- Definiciones de rutas principales
+- Metadata SEO básica
 
-- `src/data/cv.ts`: Contiene la información del curriculum vitae, incluyendo:
-  - Información personal
-  - Experiencia laboral
-  - Educación
-  - Habilidades
-  - Proyectos
-  
-## Nuvas entradas en el blog
+### `src/data/cv.ts`
+- Datos estructurados del curriculum vitae
+- Experiencia laboral
+- Formación académica
+- Habilidades técnicas
 
-Para crear una nueva entrada en el blog, sigue los siguientes pasos:
+## Gestión de Contenido
 
-1. Crea un nuevo archivo en el directorio `src/content/BlogPosts/` con el nombre `post1.md`
-2. La numeración de los archivos debe ser secuencial
-3. Usa como template el archivo `src/assets/post_exmaple.md`
-
-### Formato del frontmatter
-
-El frontmatter de los posts debe seguir estas reglas:
-
+### Nuevos Posts de Blog
+1. Crear archivo Markdown en `src/content/BlogPosts/`
+2. Usar formato:
 ```md
 ---
-title: "Título del post"
-date: "YYYY-MM-DD"  # La fecha debe ser un string entre comillas
+title: "Título"
+date: "YYYY-MM-DD"
 tags: ["tag1", "tag2"]
-excerpt: "Resumen breve del post"
+excerpt: "Resumen"
 ---
 ```
-
-**Importante**: La fecha debe estar en formato string con comillas dobles (`"2025-03-25"`) y no como un valor de fecha sin comillas.
+3. Ejemplo disponible en `src/assets/post_example.md`
