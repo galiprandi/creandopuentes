@@ -1,0 +1,97 @@
+---
+import { marked } from "marked";
+const { msg } = Astro.props;
+
+marked.setOptions({ async: false });
+const parseMsg = marked.parse(msg.content);
+
+---
+
+<div class={`message ${msg.role}`}>
+  <div class="message-content">
+    <div set:html={parseMsg} />
+    {
+      msg.role === "assistant" && (
+        <button class="copy-button">
+          <svg
+            viewBox="0 0 24 24"
+            width="16"
+            height="16"
+            stroke="currentColor"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+            <path d="M16 4h0a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h0" />
+          </svg>
+        </button>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .message {
+    position: relative;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: fit-content;
+}
+
+.user {
+      text-align: right;
+    background-color: #f0f0f0;
+    margin-left: auto;
+  }
+
+  .assistant {
+    text-align: justify;
+    background-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+
+    color: #333333;
+  }
+
+  .copy-button {
+    position: absolute;
+    right: 0rem;
+    bottom: -1em;
+    transform: translateY(-70%);
+    z-index: 2;
+    border: none;
+    color: #8e8e8e;
+    padding: 4px 8px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  .copy-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+</style>
+
+<script>
+  export interface Props {
+    msg: { role: string; content: string };
+  }
+
+  const { msg } = Astro.props as Props;
+
+  const copyButton = document.querySelector(".copy-button");
+
+  copyButton?.addEventListener("click", () => {
+    navigator.clipboard.writeText(msg.content);
+    copyButton.textContent = "Copied!";
+    setTimeout(() => {
+      copyButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h0a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h0"></path></svg>`;
+    }, 2000);
+  });
+</script>
