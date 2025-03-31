@@ -1,10 +1,10 @@
 ---
 import { marked } from "marked";
+const { msg } = Astro.props;
 
 marked.setOptions({ async: false });
-
-const { msg } = Astro.props;
 const parseMsg = marked.parse(msg.content);
+
 ---
 
 <div class={`message ${msg.role}`}>
@@ -49,7 +49,8 @@ const parseMsg = marked.parse(msg.content);
 
   .assistant {
     text-align: justify;
-    background-color: #d1f7c4;
+    background-color: color-mix(in srgb, var(--color-accent) 50%, transparent);
+
     color: #333333;
   }
 
