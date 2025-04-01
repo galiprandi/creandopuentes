@@ -5,6 +5,7 @@ import SocialIcons from './SocialIcons.astro'
 import ProfilePictures from '@/assets/logo.png'
 import { getCollection } from 'astro:content'
 import { template } from '@/settings'
+import DarkLightController from './DarkLightController.astro'
 
 const isDeasPopulated = await getCollection('deas').then(collection => collection.length > 0)
 const isDocentesPopulated = await getCollection('docentes').then(collection => collection.length > 0)
@@ -55,8 +56,9 @@ const {fullName, title} = profile
 				</ul>
 			</div>
 		</div>
-		<div class='mx-4'>
+		<div class='mx-auto'>
 			<SocialIcons/>
 		</div>
+		<DarkLightController/>
 	</div>
 </aside>
