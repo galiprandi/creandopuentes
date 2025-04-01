@@ -6,15 +6,15 @@ import { template } from '@/settings'
 import { getCollection } from 'astro:content'
 
 export async function getStaticPaths({ paginate }) {
-    const blogEntries = await getCollection("blog");
+    const familiasEntries = await getCollection("familias");
 
-    const posts = blogEntries
+    const posts = familiasEntries
         .map(post => ({
             title: post.data.title,
             date: post.data.date,
             badge: post.data.tags[0],
             excerpt: trimExcerpt(post.data.excerpt),
-            slug: `${template.base}/blog/${post.id}`,
+            slug: `${template.base}/familias/${post.id}`,
         }))
         .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -30,7 +30,7 @@ const { page } = Astro.props
         <link rel="icon" type="image/png" href={`${template.base}/src/assets/logo.png`} />
     </head>
     <div>
-		<h1 class='text-3xl font-bold mb-8'>Blog Posts</h1>
+		<h1 class='text-3xl font-bold mb-8'>Estrategias para familias</h1>
 		<div class='grid gap-8'>
 			{
 				page.data.map(post => (

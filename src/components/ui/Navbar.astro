@@ -6,7 +6,9 @@ import ProfilePictures from '@/assets/logo.png'
 import { getCollection } from 'astro:content'
 import { template } from '@/settings'
 
-const isBlogPopulated = await getCollection('blog').then(collection => collection.length > 0)
+const isDeasPopulated = await getCollection('deas').then(collection => collection.length > 0)
+const isDocentesPopulated = await getCollection('docentes').then(collection => collection.length > 0)
+const isFamiliasPopulated = await getCollection('familias').then(collection => collection.length > 0)
 
 const {fullName, title} = profile
 ---
@@ -26,19 +28,30 @@ const {fullName, title} = profile
 			<div class='mx-4 mt-16'>
 				<ul class='space-y-4 menu grow shrink menu-md overflow-y-auto'>
 					<li>
-                        <a href={template.base || '/'} class='text-lg'>Inicio</a>
+						<a href={template.base || '/'} class='text-lg'>Inicio</a>
 					</li>
-                    {isBlogPopulated &&
+					{isDeasPopulated &&
 					<li>
-                        <a href={`${template.base}/blog/1`} class='text-lg'>Blog</a>
+						<a href={`${template.base}/deas/1`} class='text-lg'>DEAs</a>
 					</li>
-                    }
+					}
+					{isFamiliasPopulated &&
+						<li>
+							<a href={`${template.base}/familias/1`} class='text-lg'>Familias</a>
+						</li>
+					}
+					{isDocentesPopulated &&
 					<li>
-                        <a href={`${template.base}/papers`} class='text-lg'>Papers</a>
+						<a href={`${template.base}/docentes/1`} class='text-lg'>Docentes</a>
+					</li>
+					}
+					
+					<li>
+						<a href={`${template.base}/papers`} class='text-lg'>Papers</a>
 					</li>
 					<li>
-                        <a href={`${template.base}/cv`} class='text-lg'>CV</a>
-                    </li>
+						<a href={`${template.base}/cv`} class='text-lg'>CV</a>
+					</li>
 				</ul>
 			</div>
 		</div>
