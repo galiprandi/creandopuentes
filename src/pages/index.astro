@@ -10,11 +10,11 @@ import ArticleList from '@/components/ui/ArticleList.astro'
 const { fullName, title, institute } = profile
 
 // Fetch blog entries
-const blogEntries = await getCollection("blog");
-const latestBlogEntries = blogEntries
+const deasEntries = await getCollection("deas");
+const latestDeasEntries = deasEntries
   .map(post => ({
     title: post.data.title,
-    journal: post.data.tags?.[0] || 'Blog',
+    journal: post.data.tags?.[0] || 'Dea',
     time: new Date(post.data.date).toLocaleDateString(),
     id: post.id
   }))
@@ -48,7 +48,7 @@ const latestPapers = publications
 
 	<!-- Latest Blog Entries -->
 	<section class='py-12'>
-		<ArticleList listTitle='Últimas entradas' listItems={latestBlogEntries} />
+		<ArticleList listTitle='DEAS' listItems={latestDeasEntries} />
 	</section>
 
 	<!-- Latest Papers -->
