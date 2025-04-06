@@ -1,17 +1,17 @@
 ---
 import { marked } from "marked";
-const { msg } = Astro.props;
+const { props } = Astro.props;
 
 marked.setOptions({ async: false });
-const parseMsg = marked.parse(msg.content);
+const parseMsg = marked.parse(props.content);
 
 ---
 
-<div class={`message ${msg.role}`}>
+<div class={`message ${props.role}`}>
   <div class="message-content">
     <div set:html={parseMsg} />
     {
-      msg.role === "assistant" && (
+      props.role === "assistant" && (
         <button class="copy-button">
           <svg
             viewBox="0 0 24 24"
@@ -42,7 +42,7 @@ const parseMsg = marked.parse(msg.content);
 }
 
 .user {
-      text-align: right;
+    text-align: right;
     background-color: #f0f0f0;
     margin-left: auto;
   }
@@ -80,15 +80,15 @@ const parseMsg = marked.parse(msg.content);
 
 <script>
   export interface Props {
-    msg: { role: string; content: string };
+    props: { role: string; content: string };
   }
 
-  const { msg } = Astro.props as Props;
+  const { props } = Astro.props as Props;
 
   const copyButton = document.querySelector(".copy-button");
 
   copyButton?.addEventListener("click", () => {
-    navigator.clipboard.writeText(msg.content);
+    navigator.clipboard.writeText(props.content);
     copyButton.textContent = "Copied!";
     setTimeout(() => {
       copyButton.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect><path d="M16 4h0a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h0"></path></svg>`;
